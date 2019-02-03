@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    .container-fluid
+        .row
+            .col
+                .d-flex.flex-column
+                    ul.list-group.list-tab( role="tablist" )
+                        -
+                            var list = responses;
+                            // look into ternary conversion with pug
+                            list.sort((a,b) => {
+                            if(a.name < b.name) return -1;
+                            if(a.name > b.name) return 1;
+                            return 0;
+                            });
+
+                        each response, i in list
+                            li.list-group-item.list-group-item-action(id=response._id)=response.name
+            // This will be main area for response.descriptions
+            .col
+                main.col-md-9.ml-sm-auto.col-lg-10.px-4(role='main')
+                    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3
+                        p#response_data
