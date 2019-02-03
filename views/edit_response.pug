@@ -1,0 +1,15 @@
+extend layout
+
+block content
+    h1 #{title}
+    form(method='POST', action='/response/edit/' + response._id)
+        #form-group
+            label Name:
+            input.form-control(name='name', type='text' value=response.name)
+        #form-group
+            label Description:
+            textarea.form-control(name='description')=response.description
+        br
+        .btn-group
+            button.btn.btn-primary(type='submit') Submit
+            button.btn.btn-danger(type='submit' formmethod='POST' formaction='/response/delete/' + response._id) Delete

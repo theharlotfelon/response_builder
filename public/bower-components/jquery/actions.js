@@ -5,8 +5,7 @@
 });*/
 
 
-$(".list-group .list-group-item.list-group-item-action").click(function(e) {
-    $(".list-group .list-group-item").removeClass("active");
+$("a.rclick").hover(function(e) {
+    $("a.rclick").removeClass("active");
     $(e.target).addClass("active");
 });
-// dont need
