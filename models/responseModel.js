@@ -20,6 +20,10 @@ const responseSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    updated: {
+        type: Date,
+        default: Date.now()
     }
 });
 

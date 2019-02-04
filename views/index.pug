@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    .container-fluid
+        .row
+            .col
+                .d-flex.flex-column
+                    ul.list-group.list-tab( role="tablist" )
+                        each response, i in responses
+                            a.list-group-item.list-group.action.rclick(href='/response/'+response.id)
+                                .d-flex.w-100.justify-content-between
+                                    h6.mb-1 #{response.name}
+                                small #{calculateTime(response.created_date, response.updated)}
+
+            // This will be main area for response.descriptions
+            .col
+                main.col-md-9.ml-sm-auto.col-lg-10.px-4(role='main')
+                    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3
+                        p#response_data

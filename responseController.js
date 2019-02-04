@@ -1,4 +1,4 @@
-Resp_Data = require('./responseModel');
+Resp_Data = require('./models/responseModel');
 
 exports.index = (req, res) => {
     Resp_Data.get((err, data) => {
@@ -18,7 +18,7 @@ exports.index = (req, res) => {
 
 const user_id = "5c54631617fbd88ae7f16e53"; // hard coded user, will need to add later
 
-exports.new = (req, res) => {
+/*exports.new = (req, res) => {
     let rdata = new Resp_Data();
     if(req.body.user_id) {
         rdata.name = req.body.name ? req.body.name : rdata.name;
@@ -39,6 +39,25 @@ exports.new = (req, res) => {
             message: 'No user_id defined. Unable to create new response.'
         })
     };
+};*/
+
+exports.new = (req, res) => {
+    let rdata = new Resp_Data();
+
+    rdata.name = req.body.name ? req.body.name : rdata.name;
+    rdata.description = req.body.description;
+    rdata.user_id = "5c54631617fbd88ae7f16e53"; //change this
+
+    rdata.save(err => {
+        if(err) {
+            res.json(err);
+        }
+        res.json({
+            message: 'New response created!',
+            data: rdata
+        });
+    })
+
 };
 
 exports.viewAll = (req, res) => {

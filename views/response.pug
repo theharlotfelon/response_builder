@@ -1,0 +1,7 @@
+extend layout
+
+block content
+    h1=response.name
+    br
+    p=response.description
+    a.btn.btn-primary(href='/response/edit/'+response.id) Edit
