@@ -5,14 +5,18 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config/database');
 const path = require('path');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // Init App
 const app = express();
-let Response = require('./models/responseModel');
 
 // Load View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+app.use(expressValidator());
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -35,6 +39,22 @@ db.once('open', () => {
 db.on('error', (err) => {
     console.log(err);
 });
+
+// Express Session Middleware
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+    res.locals.messages = require('express-messages')(req, res);
+    next();
+});
+
+
 
 // Use API routes in the App
 let users = require('./routes/user_routes');

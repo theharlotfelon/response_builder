@@ -35,21 +35,35 @@ exports.pageResponse = (req, res) => {
 };
 
 exports.addResponse = (req, res) => {
-    let rdata = new Response();
+    req.checkBody('name', 'Name is required').notEmpty();
+    req.checkBody('description', 'Description is required').notEmpty();
 
-    rdata.name = req.body.name ? req.body.name : rdata.name;
-    rdata.description = req.body.description;
-    rdata.user_id = "5c54631617fbd88ae7f16e53"; //change this
+    // Get Errors
+    let errors = req.validationErrors();
 
-    rdata.save(err => {
-        if(err) {
-            res.json(err);
-            return;
-        } else {
-            console.log(rdata);
-            res.redirect('/')
-        };
-    });
+    if(errors) {
+        res.render('add_response', {
+            title:'Add Response',
+            errors:errors
+        });
+    } else {
+        let response = new Response();
+
+        response.name = req.body.name ? req.body.name : response.name;
+        response.description = req.body.description;
+        response.user_id = "5c54631617fbd88ae7f16e53"; //change this
+
+        response.save(err => {
+            if(err) {
+                console.log(err);
+                return;
+            } else {
+                console.log(response); // think about removing
+                req.flash('success', 'Article Added');
+                res.redirect('/')
+            };
+        });
+    }
 };
 
 exports.getById = (req, res) => {
@@ -82,11 +96,12 @@ exports.update = (req, res) => {
     response.updated = Date.now();
 
     let query = {_id: req.params.id}
-    Response.update(query, response, (err) => {
+    Response.updateOne(query, response, (err) => {
         if(err) {
             console.log(err);
             return;
         } else {
+            req.flash('success', 'Article Updated');
             res.redirect('/');
         }
     })
